@@ -9,6 +9,9 @@
       :index="index"
       :key="index"
       :nodes="menu"
+      :parentCheck="menu.checked"
+      :title="setting[index].title"
+      :isshowallcheck="props.multiple && setting[index].isshowallcheck"
     ></cascader-menu>
   </div>
 </template>
@@ -71,7 +74,6 @@ const focusNode = el => {
 
 const checkNode = el => {
   if (!el) return;
-
   const input = el.querySelector("input");
   if (input) {
     input.click();
@@ -95,6 +97,7 @@ export default {
       type: Boolean,
       default: true
     },
+    setting: Array,
     renderLabel: Function
   },
 
@@ -391,6 +394,13 @@ export default {
       } else {
         this.checkedValue = emitPath ? [] : null;
       }
+    },
+    calcAllChecked() {
+      this.$refs.menu.forEach((menu, index) => {
+        if (this.setting[index].isshowallcheck) {
+          menu.handleChildCheckChange();
+        }
+      });
     }
   }
 };

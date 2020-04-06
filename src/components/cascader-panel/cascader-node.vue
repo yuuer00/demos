@@ -21,6 +21,9 @@ export default {
   },
 
   computed: {
+    // parent() {
+    //   return this.node.parent;
+    // },
     config() {
       return this.panel.config;
     },
@@ -73,6 +76,9 @@ export default {
       } else {
         panel.handleExpand(node);
       }
+      this.$nextTick(() => {
+        this.panel.calcAllChecked();
+      });
     },
 
     handleCheckChange() {
@@ -84,6 +90,7 @@ export default {
     handleMultiCheckChange(checked) {
       this.node.doCheck(checked);
       this.panel.calculateMultiCheckedValue();
+      this.panel.calcAllChecked();
     },
 
     isInPath(pathNodes) {

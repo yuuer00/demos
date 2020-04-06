@@ -21,14 +21,20 @@ export default {
       type: Array,
       required: true
     },
-    index: Number
+    index: Number,
+    // du
+    title: String,
+    isshowallcheck: Boolean
   },
 
   data() {
     return {
       activeNode: null,
       hoverTimer: null,
-      id: generateId()
+      id: generateId(),
+      // du
+      allChecked: null,
+      allIsIndeterminate: null
     };
   },
 
@@ -92,7 +98,6 @@ export default {
       if (isHoverMenu) {
         events.on.expand = this.handleExpand;
       }
-
       const nodes = this.nodes.map((node, index) => {
         const { hasChildren } = node;
         return (
@@ -106,20 +111,69 @@ export default {
           ></cascader-node>
         );
       });
-
       return [
         ...nodes,
         isHoverMenu ? (
           <svg ref="hoverZone" class="el-cascader-menu__hover-zone"></svg>
         ) : null
       ];
+    },
+    // 全选
+    handleChildCheckChange() {
+      if (!this.isshowallcheck) {
+        return;
+      }
+      let check = true;
+      let isIndeterminate = false;
+      this.nodes.forEach(node => {
+        if (!node.checked) {
+          check = false;
+          if (node.indeterminate) {
+            isIndeterminate = true;
+          }
+        } else {
+          isIndeterminate = true;
+        }
+      });
+      if (check) {
+        isIndeterminate = false;
+      }
+      this.allIsIndeterminate = isIndeterminate;
+      this.allChecked = check;
+    },
+    selectAllCheckChange(checked) {
+      this.allChecked = checked;
+      this.allIsIndeterminate = false;
+      this.nodes.forEach(node => {
+        node.doCheck(checked);
+      });
+      this.panel.calcAllChecked();
+      this.panel.calculateMultiCheckedValue();
+    },
+    renderAllCheck() {
+      const allCheckboxEvents = {
+        on: { change: this.selectAllCheckChange }
+      };
+      if (this.isshowallcheck) {
+        return (
+          <div class="checkAll">
+            <el-checkbox
+              class="cascader_allchenck"
+              indeterminate={this.allIsIndeterminate}
+              value={this.allChecked}
+              {...allCheckboxEvents}
+            >
+              全选
+            </el-checkbox>
+          </div>
+        );
+      }
+      return null;
     }
   },
-
   render(h) {
-    const { isEmpty, menuId } = this;
+    const { isEmpty, menuId, allChecked } = this;
     const events = { nativeOn: {} };
-
     // optimize hover to expand experience (#8010)
     if (this.panel.isHoverMenu) {
       events.nativeOn.mousemove = this.handleMouseMove;
@@ -127,20 +181,25 @@ export default {
     }
 
     return (
-      <el-scrollbar
-        tag="ul"
-        role="menu"
-        id={menuId}
-        class="el-cascader-menu"
-        wrap-class="el-cascader-menu__wrap"
-        view-class={{
-          "el-cascader-menu__list": true,
-          "is-empty": isEmpty
-        }}
-        {...events}
-      >
-        {isEmpty ? this.renderEmptyText(h) : this.renderNodeList(h)}
-      </el-scrollbar>
+      <div>
+        <div class="title">标题{allChecked + "1"}</div>
+
+        {this.renderAllCheck(h)}
+        <el-scrollbar
+          tag="ul"
+          role="menu"
+          id={menuId}
+          class="el-cascader-menu"
+          wrap-class="el-cascader-menu__wrap"
+          view-class={{
+            "el-cascader-menu__list": true,
+            "is-empty": isEmpty
+          }}
+          {...events}
+        >
+          {isEmpty ? this.renderEmptyText(h) : this.renderNodeList(h)}
+        </el-scrollbar>
+      </div>
     );
   }
 };
