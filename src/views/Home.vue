@@ -27,10 +27,11 @@ export default {
       setting: [
         {
           title: "类型", // 标题
-          isshowallcheck: true // 是否显示全选按钮，为true时，multiple必须为true
+          multiple: false,
+          isshowallcheck: false // 是否显示全选按钮，为true时，multiple必须为true
         },
-        { title: "测试", isshowallcheck: true },
-        { title: "", isshowallcheck: true }
+        { title: "测试", multiple: true, isshowallcheck: true },
+        { title: "", multiple: true, isshowallcheck: true }
       ]
     };
   }

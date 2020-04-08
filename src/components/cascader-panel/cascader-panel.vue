@@ -11,7 +11,8 @@
       :nodes="menu"
       :parentCheck="menu.checked"
       :title="setting[index].title"
-      :isshowallcheck="props.multiple && setting[index].isshowallcheck"
+      :isshowMultiple="setting[index].multiple"
+      :isshowallcheck="setting[index].multiple && setting[index].isshowallcheck"
     ></cascader-menu>
   </div>
 </template>

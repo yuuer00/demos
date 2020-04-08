@@ -17,6 +17,7 @@ export default {
     node: {
       required: true
     },
+    level: Number,
     nodeId: String
   },
 
@@ -24,6 +25,9 @@ export default {
     // parent() {
     //   return this.node.parent;
     // },
+    isshowMultiple() {
+      return this.panel.setting[this.level].multiple;
+    },
     config() {
       return this.panel.config;
     },
@@ -100,10 +104,9 @@ export default {
     },
 
     renderPrefix(h) {
-      const { isLeaf, isChecked, config } = this;
+      const { isLeaf, isChecked, config, isshowMultiple } = this;
       const { checkStrictly, multiple } = config;
-
-      if (multiple) {
+      if (multiple && isshowMultiple) {
         return this.renderCheckbox(h);
       } else if (checkStrictly) {
         return this.renderRadio(h);

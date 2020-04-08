@@ -24,7 +24,8 @@ export default {
     index: Number,
     // du
     title: String,
-    isshowallcheck: Boolean
+    isshowallcheck: Boolean,
+    isshowMultiple: Boolean
   },
 
   data() {
@@ -104,6 +105,7 @@ export default {
           <cascader-node
             key={node.uid}
             node={node}
+            level={node.level - 1}
             node-id={`${menuId}-${index}`}
             aria-haspopup={hasChildren}
             aria-owns={hasChildren ? menuId : null}
