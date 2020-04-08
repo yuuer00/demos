@@ -172,7 +172,13 @@ export default {
     }
   },
   render(h) {
-    const { isEmpty, menuId, allChecked } = this;
+    const { isEmpty, menuId, nodes, title } = this;
+    let parentLabel = title;
+    if (nodes && nodes.length > 0 && !title) {
+      if (nodes[0].parent) {
+        parentLabel = nodes[0].parent.label;
+      }
+    }
     const events = { nativeOn: {} };
     // optimize hover to expand experience (#8010)
     if (this.panel.isHoverMenu) {
@@ -182,8 +188,7 @@ export default {
 
     return (
       <div>
-        <div class="title">标题{allChecked + "1"}</div>
-
+        <div class="cascader-menu-title">{parentLabel}</div>
         {this.renderAllCheck(h)}
         <el-scrollbar
           tag="ul"

@@ -27,11 +27,10 @@ export default {
       setting: [
         {
           title: "类型", // 标题
-          multiple: false, // 此级是否支持多选(注意！true之后不能出现false)
-          isshowallcheck: false // 是否显示全选按钮，为true时，multiple必须为true
+          isshowallcheck: true // 是否显示全选按钮，为true时，multiple必须为true
         },
-        { title: "组件", multiple: true, isshowallcheck: true },
-        { title: "功能", multiple: true, isshowallcheck: true }
+        { title: "测试", isshowallcheck: true },
+        { title: "", isshowallcheck: true }
       ]
     };
   }
