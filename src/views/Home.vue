@@ -1,10 +1,8 @@
 <template>
   <div class="home">
-    <!-- <div>{{ checkedValue }}</div> -->
     <div class="d-flex">
       <cascader-panel
         :options="options"
-        :props="props"
         v-model="checkedValue"
         :setting="setting"
       ></cascader-panel>

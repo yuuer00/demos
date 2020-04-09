@@ -59,7 +59,7 @@ export default {
   },
 
   methods: {
-    handleExpand() {
+    handleExpand(flag, type) {
       const { panel, node, isDisabled, config } = this;
       const { multiple, checkStrictly } = config;
 
@@ -78,6 +78,14 @@ export default {
           }
         });
       } else {
+        if (
+          multiple &&
+          this.node.children.length <= 0 &&
+          !flag &&
+          type === "click"
+        ) {
+          this.handleMultiCheckChange(!this.node.checked);
+        }
         panel.handleExpand(node);
       }
       this.$nextTick(() => {
@@ -209,7 +217,9 @@ export default {
     const events = { on: {} };
 
     if (expandTrigger === "click") {
-      events.on.click = this.handleExpand;
+      events.on.click = e => {
+        this.handleExpand(e.target.className === "el-checkbox__inner", "click");
+      };
     } else {
       events.on.mouseenter = e => {
         this.handleExpand();

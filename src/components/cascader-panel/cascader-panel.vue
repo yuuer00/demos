@@ -34,7 +34,7 @@ import {
 const { keys: KeyCode } = AriaUtils;
 const DefaultProps = {
   expandTrigger: "click", // or hover
-  multiple: false,
+  multiple: true,
   checkStrictly: false, // whether all nodes can be selected
   emitPath: true, // wether to emit an array of all levels value in which node is located
   lazy: false,
@@ -164,6 +164,9 @@ export default {
   mounted() {
     if (!isEmpty(this.value)) {
       this.syncCheckedValue();
+      this.$nextTick(() => {
+        this.calcAllChecked();
+      });
     }
   },
 
