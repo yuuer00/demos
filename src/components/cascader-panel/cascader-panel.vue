@@ -99,7 +99,8 @@ export default {
       default: true
     },
     setting: Array,
-    renderLabel: Function
+    renderLabel: Function,
+    zip: Boolean
   },
 
   provide() {
@@ -115,7 +116,8 @@ export default {
       store: [],
       menus: [],
       activePath: [],
-      loadCount: 0
+      loadCount: 0,
+      result: [] // 处理数据
     };
   },
 
@@ -155,7 +157,20 @@ export default {
     checkedValue(val) {
       if (!isEqual(val, this.value)) {
         this.checkStrictly && this.calculateCheckedNodePaths();
-        this.$emit("input", val);
+        // 修改结果变量
+        if (this.zip) {
+          this.result = [];
+          this.zipFun(this.menus[0]);
+        } else {
+          let result = [];
+          val.forEach(item => {
+            let len = item.length;
+            result.push(item[len - 1]);
+          });
+          this.result = result;
+        }
+        this.$emit("input", this.result);
+        // this.$emit("input", this.result);
         this.$emit("change", val);
       }
     }
@@ -183,8 +198,14 @@ export default {
     },
     syncCheckedValue() {
       const { value, checkedValue } = this;
-      if (!isEqual(value, checkedValue)) {
-        this.checkedValue = value;
+      let result = [];
+      if (this.zip) {
+        result = this.zipFormat(this.menus[0], value);
+      } else {
+        result = this.noZipFormat(this.menus[0], value);
+      }
+      if (!isEqual(result, checkedValue)) {
+        this.checkedValue = result;
         this.syncMenuState();
       }
     },
@@ -405,6 +426,53 @@ export default {
           menu.handleChildCheckChange();
         }
       });
+    },
+    zipFun(val) {
+      val.forEach(item => {
+        if (item.checked) {
+          this.result.push(item.value);
+        } else {
+          if (item.children && item.children.length > 0) {
+            this.zipFun(item.children);
+          }
+        }
+      });
+    },
+    zipFormat(data, val) {
+      let result = [];
+      let fun = (arr, checked) => {
+        arr.forEach(item => {
+          if (item.children && item.children.length > 0) {
+            if (val.indexOf(item.value) > -1) {
+              fun(item.children, true);
+            } else {
+              fun(item.children, checked);
+            }
+          } else {
+            if (val.indexOf(item.value) > -1 || checked) {
+              result.push(item.path);
+            }
+          }
+        });
+      };
+      fun(data);
+      return result;
+    },
+    noZipFormat(data, val) {
+      let result = [];
+      let fun = arr => {
+        arr.forEach(item => {
+          if (item.children && item.children.length > 0) {
+            fun(item.children);
+          } else {
+            if (val.indexOf(item.value) > -1) {
+              result.push(item.path);
+            }
+          }
+        });
+      };
+      fun(data);
+      return result;
     }
   }
 };
