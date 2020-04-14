@@ -155,7 +155,13 @@ export default {
       this.checkStrictly && this.calculateCheckedNodePaths();
     },
     checkedValue(val) {
-      if (!isEqual(val, this.value)) {
+      let result = [];
+      if (this.zip) {
+        result = this.zipFormat(this.menus[0], this.value);
+      } else {
+        result = this.noZipFormat(this.menus[0], this.value);
+      }
+      if (!isEqual(val, result)) {
         this.checkStrictly && this.calculateCheckedNodePaths();
         // 修改结果变量
         if (this.zip) {
@@ -170,7 +176,7 @@ export default {
           this.result = result;
         }
         this.$emit("input", this.result);
-        // this.$emit("input", this.result);
+        // this.$emit("input", val);
         this.$emit("change", val);
       }
     }

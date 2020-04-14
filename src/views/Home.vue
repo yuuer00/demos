@@ -25,7 +25,7 @@ export default {
       //   ["zhinan", "shejiyuanze", "fankui"],
       //   ["zhinan", "shejiyuanze", "xiaolv"]
       // ],
-      checkedValue: ["zhinan"],
+      checkedValue: [],
       options: options,
       props: { multiple: true },
       setting: [

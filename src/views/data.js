@@ -126,10 +126,6 @@ let options = [
           {
             value: "rate",
             label: "Rate 评分"
-          },
-          {
-            value: "form",
-            label: "Form 表单"
           }
         ]
       },
