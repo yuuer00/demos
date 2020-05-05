@@ -1,34 +1,39 @@
 <template>
   <div class="home">
     <div class="d-flex">
-      <cascader-panel
+      <ducascader
         :options="options"
         v-model="checkedValue"
         :setting="setting"
-      ></cascader-panel>
+        :iszip="iszip"
+        :props="props"
+      ></ducascader>
     </div>
+    {{ checkedValue }}
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import cascaderPanel from "@/components/cascader-panel/cascader-panel";
+import ducascader from "@/components/cascader-panel/index";
 import { options } from "./data";
 export default {
   name: "Home",
-  components: { cascaderPanel },
+  components: { ducascader },
   data() {
     return {
       checkedValue: [],
       options: options,
-      props: { multiple: true },
+      props: { multiple: true, value: "id", label: "name", children: "child" },
+      iszip: true,
       setting: [
         {
           title: "类型", // 标题
-          multiple: false,
-          isshowallcheck: false // 是否显示全选按钮，为true时，multiple必须为true
+          multiple: true,
+          isshowallcheck: true // 是否显示全选按钮，为true时，multiple必须为true
         },
         { title: "测试", multiple: true, isshowallcheck: true },
+        { title: "", multiple: true, isshowallcheck: true },
         { title: "", multiple: true, isshowallcheck: true }
       ]
     };

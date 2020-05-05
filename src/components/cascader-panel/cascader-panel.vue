@@ -155,6 +155,7 @@ export default {
     checkedValue(val) {
       if (!isEqual(val, this.value)) {
         this.checkStrictly && this.calculateCheckedNodePaths();
+        this.$emit("nodes", this.menus[0]);
         this.$emit("input", val);
         this.$emit("change", val);
       }
