@@ -12,6 +12,11 @@
 
 <script>
 import cascaderPanel from "@/components/cascader-panel/cascader-panel";
+const DefaultProps = {
+  value: "value",
+  label: "label",
+  children: "children"
+};
 const calcValueToZip = node => {
   if (node.checked) {
     return [node.value];
@@ -49,6 +54,9 @@ export default {
         }
         this.$emit("input", val);
       }
+    },
+    config() {
+      return Object.assign(DefaultProps, this.props || {});
     }
   },
   methods: {
@@ -56,9 +64,9 @@ export default {
       this.nodes = nodes;
     },
     tranOption(item, res = []) {
-      res.push(item[this.props.value]);
-      if (item[this.props.children] && item[this.props.children].length) {
-        return item[this.props.children].map(CN =>
+      res.push(item[this.config.value]);
+      if (item[this.config.children] && item[this.config.children].length) {
+        return item[this.config.children].map(CN =>
           this.tranOption(CN, [].concat(res))
         );
       }
