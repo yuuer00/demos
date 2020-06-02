@@ -36,15 +36,24 @@
 </template>
 
 <script>
-
 export default {
-  props: ["setting"],
+  props: ["setting", "value"],
   data() {
     return {
-      checkSite: [],
       // 目前选中的是否单选
       isRadio: false
     };
+  },
+  computed: {
+    checkSite: {
+      get() {
+        return this.value;
+      },
+      set(val) {
+        this.$emit("input", val);
+        this.$emit("change", val);
+      }
+    }
   },
   methods: {
     // 传入字符串（'pcqq'）或数据（['pcqq','app']）
@@ -65,35 +74,30 @@ export default {
         this.isRadio = true;
       }
       if (item.type === "1") {
-        if (this.isRadio) {
-          this.checkSite = [];
-        }
         if (this.isCheck(item.site)) {
           this.checkSite = this.checkSite.filter(
             site => item.site.indexOf(site) < 0
           );
         } else {
-          this.checkSite = this.checkSite.concat(item.site);
+          if (this.isRadio) {
+            this.checkSite = [].concat(item.site);
+          } else {
+            this.checkSite = this.checkSite.concat(item.site);
+          }
         }
         this.isRadio = false;
       }
     },
     handleChildChange(check, site) {
       if (check) {
-        this.checkSite.push(site);
+        this.checkSite = this.checkSite.concat(site);
       } else {
         this.checkSite = this.checkSite.filter(item => item !== site);
       }
     }
-  },
-  watch: {
-    checkSite(val) {
-      this.$emit("change", val);
-    }
   }
 };
 </script>
-
 <style lang="less" scoped>
 .selection {
   .selection_list {

@@ -11,8 +11,15 @@
     </div>
     <!-- {{ checkedValue }} -->
     <div style="margin: 20px auto;width:700px;">
-      <selection :setting="mock" @change="handleSelectionChange"></selection>
+      <selection
+        :setting="mock"
+        @change="handleSelectionChange"
+        v-model="checkSite"
+      ></selection>
     </div>
+    <el-button @click="checkSite = ['qq', 'app', 'ios']">设置多选</el-button>
+    <el-button @click="checkSite = ['pcqq']">设置单选</el-button>
+    <h3>切记！！！如果pcqq是单选，设置的时候，不能设置['pcqq','qq']这样</h3>
   </div>
 </template>
 
@@ -65,6 +72,7 @@ export default {
   data() {
     return {
       mock,
+      checkSite: [],
       checkedValue: [],
       options: options,
       props: { multiple: true, value: "id", label: "name", children: "child" },
@@ -84,6 +92,7 @@ export default {
   methods: {
     handleSelectionChange(val) {
       console.log("handleSelectionChange", val);
+      console.log("this.checkSite", this.checkSite);
     }
   }
 };
