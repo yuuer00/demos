@@ -39,12 +39,20 @@
 export default {
   props: ["setting", "value"],
   data() {
-    return {
-      // 目前选中的是否单选
-      isRadio: false
-    };
+    return {};
   },
   computed: {
+    // 目前选中的是否单选
+    isRadio() {
+      let flag = false;
+      for (const item of this.setting) {
+        if (item.type === "0" && this.isCheck(item.site)) {
+          flag = true;
+          break;
+        }
+      }
+      return flag;
+    },
     checkSite: {
       get() {
         return this.value;
@@ -71,7 +79,6 @@ export default {
         } else {
           this.checkSite = [].concat(item.site);
         }
-        this.isRadio = true;
       }
       if (item.type === "1") {
         if (this.isCheck(item.site)) {
@@ -85,7 +92,6 @@ export default {
             this.checkSite = this.checkSite.concat(item.site);
           }
         }
-        this.isRadio = false;
       }
     },
     handleChildChange(check, site) {
