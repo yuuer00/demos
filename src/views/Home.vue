@@ -18,7 +18,7 @@
       ></selection>
     </div>
     <el-button @click="checkSite = ['qq', 'app', 'ios']">设置多选</el-button>
-    <el-button @click="checkSite = ['pcqq']">设置单选</el-button>
+    <el-button @click="checkSite = []">设置单选</el-button>
     <h3>切记！！！如果pcqq是单选，设置的时候，不能设置['pcqq','qq']这样</h3>
   </div>
 </template>
