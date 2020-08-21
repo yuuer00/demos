@@ -51,6 +51,7 @@ export default {
           break;
         }
       }
+      console.log("=====");
       return flag;
     },
     checkSite: {
