@@ -10,16 +10,21 @@
       ></ducascader>
     </div>
     <!-- {{ checkedValue }} -->
-    <div style="margin: 20px auto;width:700px;">
+    <div style="margin: 20px auto;width:700px;display:none;">
       <selection
         :setting="mock"
         @change="handleSelectionChange"
         v-model="checkSite"
       ></selection>
     </div>
-    <el-button @click="checkSite = ['qq', 'app', 'ios']">设置多选</el-button>
+    <!-- <el-button @click="checkSite = ['qq', 'app', 'ios']">设置多选</el-button>
     <el-button @click="checkSite = ['pcqq']">设置单选</el-button>
-    <h3>切记！！！如果pcqq是单选，设置的时候，不能设置['pcqq','qq']这样</h3>
+    <h3>切记！！！如果pcqq是单选，设置的时候，不能设置['pcqq','qq']这样</h3> -->
+
+    <img-roll
+      :height="200"
+      url="https://qcloudtest-1255506820.cos.ap-guangzhou.myqcloud.com/images/col1.jpg"
+    ></img-roll>
   </div>
 </template>
 
@@ -65,10 +70,11 @@ const mock = [
 // @ is an alias to /src
 import ducascader from "@/components/cascader-panel/index";
 import selection from "@/components/selection";
+import imgRoll from "@/components/img-roll";
 import { options } from "./data";
 export default {
   name: "Home",
-  components: { ducascader, selection },
+  components: { ducascader, selection, imgRoll },
   data() {
     return {
       mock,
